@@ -1,0 +1,56 @@
+{
+  "jobs": [
+    {
+      "name": "App\\Jobs\\CollectClientData",
+      "params": [
+        [],
+        "CLIENT"
+      ],
+      "frequency": "everyMinute"
+    },
+    {
+      "name": "App\\Jobs\\CollectClientData",
+      "params": [
+        [],
+        "EVENT_TYPE"
+      ],
+      "frequency": "everyMinute"
+    },
+    {
+      "name": "App\\Jobs\\CollectClientData",
+      "params": [
+        [],
+        "DEVICE"
+      ],
+      "frequency": "everyMinute"
+    },
+    {
+      "name": "App\\Jobs\\CollectClientData",
+      "params": [
+        [],
+        "EVENT"
+      ],
+      "frequency": "everyMinute"
+    },
+    {
+      "name": "App\\Jobs\\ClearExpiredSessionsAndCache",
+      "params": [],
+      "frequency": "everyThirtyMinutes"
+    },
+    {
+      "name": "App\\Jobs\\ClearOldEventsAndLogs",
+      "params": [],
+      "frequency": "daily"
+    },
+    {
+      "name": "App\\Jobs\\CacheHostsBlocked",
+      "params": [],
+      "frequency": "everyFiveMinutes"
+    },
+    {
+      "name": "App\\Jobs\\DeleteOldUserDevices",
+      "params": [],
+      "frequency": "daily"
+    }
+  ]
+}

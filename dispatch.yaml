@@ -1,0 +1,13 @@
+dispatch:
+  - url: apistaging.ermetix.cloud/*
+    service: staging #STAGING BACKEND
+  - url: staging.ermetix.cloud/*
+    service: frontend-staging #STAGING FRONTEND
+  - url: apidemo.ermetix.cloud/*
+    service: demo #DEMO BACKEND
+  - url: demo.ermetix.cloud/*
+    service: frontend-demo #DEMO FRONTEND
+  - url: ermetix.cloud/*
+    service: default #PROD FRONTEND
+  - url: api.ermetix.cloud/*
+    service: backend-default #PROD BACKEND

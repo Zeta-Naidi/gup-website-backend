@@ -1,0 +1,122 @@
+service: staging
+runtime: php81  # language of the app
+env: standard     # let app engine know we use flexible environment
+instance_class: F1
+automatic_scaling:
+  target_cpu_utilization: 0.75
+  min_instances: 0
+  max_instances: 3
+  max_idle_instances: 1
+  min_pending_latency: 1100ms
+  max_pending_latency: 2500ms
+  max_concurrent_requests: 18
+  target_throughput_utilization: 0.75
+runtime_config:
+  document_root: public   #folder where index.php is
+# Ensure we skip ".env", which is only for local development
+handlers:
+  - url: /(.*\.(gif|png|jpg|css|js|ico|txt))$
+    static_files: public/\1
+    upload: public/.*\.(gif|png|jpg|css|js|ico|txt)$
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
+    #http_headers:
+    #Powered-By: Ermetix
+    #Access-Control-Allow-Origin: "https://staging.ermetix.cloud"
+env_variables:
+  # Put production environment variables here.
+  APP_ENV: staging   # or production
+  APP_VERSION: 0.5.1
+  APP_DEBUG: true # or false
+  APP_URL: https://apistaging.ermetix.cloud
+  APP_KEY: base64:WDSoQV9TRPRlTJ/ngwJxW8ad0yFTUC4CNsbGeHWYWKI= #Key used for encryption - e.g. cookies auth, generate with php artisan key:generate
+  APP_HOST_TYPE: cloud_appEngine # Server local or cloud followed by type of cloud or version linux/windows
+  CACHE_DRIVER: database # database or file, to see redis
+  SESSION_DRIVER: database # database or file, to see redis
+  SESSION_COOKIE: mssp_be_session
+  APP_LOG: daily
+  APP_TIMEZONE: UTC #leave UTC
+  DB_CONNECTION: mysql #Only mysql for now
+  DB_HOST: 10.67.160.9 # ip Address os sql instance, access it locally with cloud_sql_proxy
+  DB_PORT: 3306 # database port
+  DB_DATABASE: testing_db_users_mssp_d3tGk # database users name
+  DB_USERNAME: ermetix-usr
+  DB_PASSWORD: "D]qXES&ZNDu|"
+  DB_KEY: 2HSgvFXJ4e6Fjtf4ux7cfbYlUvi2rUOz10o+pEkndtE=
+  DB_KEY_IV: 9738260827716285
+  DB_TLS_ON: true
+  PATH_DB_SSL_KEY: /certs/database/client-key.pem
+  PATH_DB_SSL_CA: /certs/database/server-ca.pem
+  PATH_DB_SSL_CERT: /certs/database/client-cert.pem
+  SCHEDULER_FILE_NAME: /jobsScheduledStaging.json
+
+  APP_STORAGE: /tmp/storage
+  APP_SERVICES_CACHE: /tmp/services.php
+  APP_PACKAGES_CACHE: /tmp/packages.php
+  APP_CONFIG_CACHE: /tmp/config.php
+  APP_ROUTES_CACHE: /tmp/routes.php
+
+  CLIENT_ID: chimpamssp_23847916235 # secrets for api portal, deprecated for now
+  CLIENT_SECRET: 0ed42986834cd18babf970411690447b5b18608f58772304c6155358d7272f4a # secrets for api portal, deprecated for now
+
+  SANCTUM_STATEFUL_DOMAINS: apistaging.ermetix.cloud,staging.ermetix.cloud # domains for auth sanctum
+  SESSION_DOMAIN: .ermetix.cloud # domains for auth sanctum
+
+  SUPER_ADMIN_USERNAME: xnoova
+  SUPER_ADMIN_EMAIL: xnoova@mail.com
+
+  BROADCAST_DRIVER: pusher
+  FILESYSTEM_DISK: local
+  QUEUE_CONNECTION: cloudtasks # Queue type for jobs, database in local/server, cloudtasks for gcloud
+  SESSION_LIFETIME: 120
+
+  #see https://github.com/stackkit/laravel-google-cloud-tasks-queue
+  STACKKIT_CLOUD_TASKS_PROJECT: ermetix
+  STACKKIT_CLOUD_TASKS_LOCATION: europe-west6
+  STACKKIT_CLOUD_TASKS_QUEUE: queue-laravel-jobs-ermetix-staging
+  STACKKIT_CLOUD_TASKS_SERVICE_EMAIL: laravel@ermetix.iam.gserviceaccount.com
+  STACKKIT_CLOUD_TASKS_HANDLER: https://apistaging.ermetix.cloud #https://staging-dot-ermetix.oa.r.appspot.com
+  #GOOGLE_APPLICATION_CREDENTIALS: /creds/ermetix-53b9cb13aa65.json
+  HEADER_AUTH_CRON_SCHEDULER_KEY: schedulerAuthenticator
+  HEADER_AUTH_CRON_SCHEDULER_VALUE: w3VOwsM85oIkQIY2uAdtKromjlP0V3KamadTVtoBlxysb9lYmmMgZVdE1hyI6uzYAHZymP4QeavndJYqFnDfdlAsNqKsxDXg5yykqz51jGysk6EtgDBhVIjNOWHMXXfalhtm1KTwUJj2kf53jaiWDKhXJzBigWMnQVfZmAOTjpd1eDbX1ZeVqqI2UKOwVB1Qyv7NJza1AB5Tvjc6eSbOabTd8QavHhTQN3gawacznPFZVVlLSNqxKB4myPIe2OV
+
+  MAIL_DRIVER: smtp
+  MAIL_HOST: pro.turbo-smtp.com
+  MAIL_PORT: 465
+  MAIL_USERNAME: info@xnoova.com
+  MAIL_PASSWORD: JsrKjWhe/Fn8Z4i4dNgrH2GMgOFtTL9hfxzbPdAFCx4=
+  MAIL_KEY: XPitt4Q8ATPCuOijpxKWDZr7szeNZ+PeGKWGVJz7GoA=
+  MAIL_ENCRYPTION: null
+  MAIL_FROM_ADDRESS: "no-reply@ermetix.cloud"
+  MAIL_FROM_NAME: "ERMETIX"
+
+
+  PUSHER_APP_ID: local
+  PUSHER_APP_KEY: local
+  PUSHER_APP_SECRET: local
+  #PUSHER_HOST:
+  PUSHER_PORT: 6001
+  PUSHER_SCHEME: https
+  PUSHER_APP_CLUSTER: mt1
+
+  #see https://stackoverflow.com/questions/67732969/how-to-use-google-cloud-logging-at-a-lumen-laravel-application,
+  #https://packagist.org/packages/google/cloud-logging
+  LOG_CHANNELS: single,googlecloud
+  #Project Name
+  GOOGLE_PROJECT: ermetix
+  #LOG_DEPRECATIONS_CHANNEL: null
+  LOG_LEVEL: debug # This option determines the minimum "level" a message must be in order to be logged by the channel
+  LOG_DELETE: true # this is a parameter added by us in the project .env file. You can add here any setting you would add to your .env file
+  # GOOGLE_VISION_PROJECT_ID : project_id
+  #we need this for the flex environment
+  beta_settings:
+  # for Cloud SQL, set this value to the Cloud SQL connection name,
+  # e.g. "project:region:cloudsql-instance"
+  cloud_sql_instances: ermetix:europe-west8:emertix-akpcicanf9
+build_env_variables:
+  GOOGLE_COMPOSER_VERSION: 2.2.1
+vpc_access_connector:
+  name: projects/ermetix/locations/europe-west6/connectors/ermetixserverlesscon
+  egress_setting: private-ranges-only
