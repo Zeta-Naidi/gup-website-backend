@@ -15,22 +15,7 @@ return [
   |
   */
 
-  'default' => env('DB_DATABASE', 'users'),
-
-  /*
-  |--------------------------------------------------------------------------
-  | Env database variables
-  |--------------------------------------------------------------------------
-  | Need to store them in case config files are cached
-  |
-  */
-
-  'host' => env('DB_HOST', '127.0.0.1'),
-  'port' => env('DB_PORT', 3306),
-  'username' => env('DB_USERNAME', 'root'),
-  'password' => env('DB_PASSWORD', ''),
-  'database' => env('DB_DATABASE', 'users'),
-  'unix_socket' => env('DB_SOCKET', null),
+  'default' => env('DB_DATABASE', 'mysql'),
 
   /*
   |--------------------------------------------------------------------------
@@ -47,256 +32,67 @@ return [
   | choice installed on your machine before you begin development.
   |
   */
+  'connections' => [
 
-  'connections' => (function () {
-    $host = env('DB_HOST', '127.0.0.1');
-    $username = env('DB_USERNAME', 'root');
-    $password = env('DB_PASSWORD', '');
-    $databaseUsers = env('DB_DATABASE', 'users');
-    $dbSocket = env('DB_SOCKET', null);
-    // Create PDO connection
-    $connections = [];
-    //Default connection
-    $connections[$databaseUsers] = [
-      'driver' => 'mysql',
-      'port' => env('DB_PORT'),
-      'database' => env('DB_DATABASE'),
-      'username' => env('DB_USERNAME'),
-      'password' => env('DB_PASSWORD'),
-      'charset' => 'utf8mb4',
-      'collation' => 'utf8mb4_unicode_ci',
-      'prefix' => '',
-      'unix_socket' => env('DB_SOCKET'),// only for cloud
-      'host' => env('DB_HOST'),
-      'prefix_indexes' => true,
-      'strict' => true,
-      'engine' => null,
-    ];
-    $connections['db_users_mssp_d3tGkTEST'] = [
-      'driver' => 'mysql',
-      'port' => env('DB_PORT'),
-      'database' => 'db_users_mssp_d3tGkTEST',
-      'username' => env('DB_USERNAME'),
-      'password' => env('DB_PASSWORD'),
-      'charset' => 'utf8mb4',
-      'collation' => 'utf8mb4_unicode_ci',
-      'prefix' => '',
-      'unix_socket' => env('DB_SOCKET'),// only for cloud
-      'host' => env('DB_HOST'),
-      'prefix_indexes' => true,
-      'strict' => true,
-      'engine' => null,
-    ];
-    $connections['testing_mdm_prova1_d3tGkTEST'] = [
-      'driver' => 'mysql',
-      'port' => env('DB_PORT'),
-      'database' => 'testing_mdm_prova1_d3tGkTEST',
-      'username' => env('DB_USERNAME'),
-      'password' => env('DB_PASSWORD'),
-      'charset' => 'utf8mb4',
-      'collation' => 'utf8mb4_unicode_ci',
-      'prefix' => '',
-      'unix_socket' => env('DB_SOCKET'),// only for cloud
-      'host' => env('DB_HOST'),
-      'prefix_indexes' => true,
-      'strict' => true,
-      'engine' => null,
-    ];
-    $connections['testing_distributor_1_d3tGkTEST'] = [
-      'driver' => 'mysql',
-      'port' => env('DB_PORT'),
-      'database' => 'testing_distributor_1_d3tGkTEST',
-      'username' => env('DB_USERNAME'),
-      'password' => env('DB_PASSWORD'),
-      'charset' => 'utf8mb4',
-      'collation' => 'utf8mb4_unicode_ci',
-      'prefix' => '',
-      'unix_socket' => env('DB_SOCKET'),// only for cloud
-      'host' => env('DB_HOST'),
-      'prefix_indexes' => true,
-      'strict' => true,
-      'engine' => null,
-    ];
-    //Test connection
-//    $connections[":memory:"] = [
-//      'driver' => 'sqlite',
-//      'database' => ':memory:',
-//      'prefix' => '',
-//    ];
-    try {
-      if(env('APP_ENV') == 'testing'){
-        $connections['db_users_mssp_d3tGkTEST'] = [
-          'driver' => 'mysql',
-          'port' => env('DB_PORT'),
-          'database' => 'db_users_mssp_d3tGkTEST',
-          'username' => env('DB_USERNAME'),
-          'password' => env('DB_PASSWORD'),
-          'charset' => 'utf8mb4',
-          'collation' => 'utf8mb4_unicode_ci',
-          'prefix' => '',
-          'unix_socket' => env('DB_SOCKET'),// only for cloud
-          'host' => env('DB_HOST'),
-          'prefix_indexes' => true,
-          'strict' => true,
-          'engine' => null,
-        ];
-        $connections['testing_mdm_prova1_d3tGkTEST'] = [
-          'driver' => 'mysql',
-          'port' => env('DB_PORT'),
-          'database' => 'testing_mdm_prova1_d3tGkTEST',
-          'username' => env('DB_USERNAME'),
-          'password' => env('DB_PASSWORD'),
-          'charset' => 'utf8mb4',
-          'collation' => 'utf8mb4_unicode_ci',
-          'prefix' => '',
-          'unix_socket' => env('DB_SOCKET'),// only for cloud
-          'host' => env('DB_HOST'),
-          'prefix_indexes' => true,
-          'strict' => true,
-          'engine' => null,
-        ];
-        $connections['testing_distributor_1_d3tGkTEST'] = [
-          'driver' => 'mysql',
-          'port' => env('DB_PORT'),
-          'database' => 'testing_distributor_1_d3tGkTEST',
-          'username' => env('DB_USERNAME'),
-          'password' => env('DB_PASSWORD'),
-          'charset' => 'utf8mb4',
-          'collation' => 'utf8mb4_unicode_ci',
-          'prefix' => '',
-          'unix_socket' => env('DB_SOCKET'),// only for cloud
-          'host' => env('DB_HOST'),
-          'prefix_indexes' => true,
-          'strict' => true,
-          'engine' => null,
-        ];
-        return $connections;
-      }
+    'sqlite' => [
+        'driver' => 'sqlite',
+        'url' => env('DATABASE_URL'),
+        'database' => env('DB_DATABASE', database_path('database.sqlite')),
+        'prefix' => '',
+        'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+    ],
 
-      if ($dbSocket)
-        $pdo = new PDO("mysql:dbname=$databaseUsers;unix_socket=$dbSocket", $username, $password);
-      else
-        $pdo = new PDO("mysql:host=$host;dbname=$databaseUsers", $username, $password);
+    'mysql' => [
+        'driver' => 'mysql',
+        'url' => env('DATABASE_URL'),
+        'host' => env('DB_HOST', '127.0.0.1'),
+        'port' => env('DB_PORT', '3306'),
+        'database' => env('DB_DATABASE', 'forge'),
+        'username' => env('DB_USERNAME', 'forge'),
+        'password' => env('DB_PASSWORD', ''),
+        'unix_socket' => env('DB_SOCKET', ''),
+        'charset' => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci',
+        'prefix' => '',
+        'prefix_indexes' => true,
+        'strict' => true,
+        'engine' => null,
+        'options' => extension_loaded('pdo_mysql') ? array_filter([
+            PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+        ]) : [],
+    ],
 
-      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    'pgsql' => [
+        'driver' => 'pgsql',
+        'url' => env('DATABASE_URL'),
+        'host' => env('DB_HOST', '127.0.0.1'),
+        'port' => env('DB_PORT', '5432'),
+        'database' => env('DB_DATABASE', 'forge'),
+        'username' => env('DB_USERNAME', 'forge'),
+        'password' => env('DB_PASSWORD', ''),
+        'charset' => 'utf8',
+        'prefix' => '',
+        'prefix_indexes' => true,
+        'search_path' => 'public',
+        'sslmode' => 'prefer',
+    ],
 
-      // Fetching distributors connections
-      $sql = "SELECT * FROM database_connections";
-      $stmt = $pdo->query($sql);
-      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      foreach ($results as $row) {
-        /*        if (env('APP_HOST_TYPE') == 'cloud_appEngine') {
-                  $connections[$row["database"]] =
-                    [
-                      'driver' => $row['driver'],
-                      'database' => $row['database'],
-                      'username' => $row['username'],
-                      'password' => $row['password'],
-                      'charset' => $row['charset'],
-                      'collation' => $row['collation'],
-                      'prefix' => $row['prefix'],
-                      'unix_socket' => $row['unix_socket'],// only for cloud
-                      'prefix_indexes' => $row['prefix_indexes'],
-                      'strict' => $row['strict'],
-                      'engine' => null
-                    ];
-                } else*/
-        if(!env('DB_KEY'))
-          $connections[$row["database"]] = $row;
-        else
-          try{
-            $key = base64_decode(env('DB_KEY'));
-            $connections[$row["database"]] =
-              [
-                'driver' => $row['driver'],
-                'database' => $row['database'],
-                'host' => openssl_decrypt($row['host'], 'aes-256-cbc', $key,0 , env('DB_KEY_IV')),
-                'port' => openssl_decrypt($row['port'], 'aes-256-cbc', $key,0 , env('DB_KEY_IV')),
-                'username' => openssl_decrypt($row['username'], 'aes-256-cbc', $key,0 , env('DB_KEY_IV')),
-                'password' => openssl_decrypt($row['password'], 'aes-256-cbc', $key,0 , env('DB_KEY_IV')),
-                'charset' => $row['charset'],
-                'collation' => $row['collation'],
-                'prefix' => $row['prefix'],
-                'unix_socket' => isset($row['unix_socket']) ?
-                  openssl_decrypt($row['unix_socket'],'aes-256-cbc', $key,0 , env('DB_KEY_IV')) :
-                  null,
-                'prefix_indexes' => $row['prefix_indexes'],
-                'strict' => $row['strict'],
-                'engine' => null
-              ];
-          }
-          catch(Exception $e){
-            echo $e->getMessage();
-            return null;
-          }
-      }
-      $pdo = null;
-    } catch (Exception $e) {
-      $pdo = null;
-      echo $e->getMessage();
-    }
-    return $connections;
+    'sqlsrv' => [
+        'driver' => 'sqlsrv',
+        'url' => env('DATABASE_URL'),
+        'host' => env('DB_HOST', 'localhost'),
+        'port' => env('DB_PORT', '1433'),
+        'database' => env('DB_DATABASE', 'forge'),
+        'username' => env('DB_USERNAME', 'forge'),
+        'password' => env('DB_PASSWORD', ''),
+        'charset' => 'utf8',
+        'prefix' => '',
+        'prefix_indexes' => true,
+        // 'encrypt' => env('DB_ENCRYPT', 'yes'),
+        // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+    ],
 
-  })(),
-  //Keep Comment to see main DB configurations
-  /* 'sqlite' => [
-       'driver' => 'sqlite',
-       'url' => env('DATABASE_URL'),
-       'database' => env('DB_DATABASE', database_path('database.sqlite')),
-       'prefix' => '',
-       'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-   ],
-
-   'mysql' => [
-       'driver' => 'mysql',
-       'url' => env('DATABASE_URL'),
-       'host' => env('DB_HOST', '127.0.0.1'),
-       'port' => env('DB_PORT', '3306'),
-       'database' => env('DB_DATABASE', 'forge'),
-       'username' => env('DB_USERNAME', 'forge'),
-       'password' => env('DB_PASSWORD', ''),
-       'unix_socket' => env('DB_SOCKET', ''),
-       'charset' => 'utf8mb4',
-       'collation' => 'utf8mb4_unicode_ci',
-       'prefix' => '',
-       'prefix_indexes' => true,
-       'strict' => true,
-       'engine' => null,
-       'options' => extension_loaded('pdo_mysql') ? array_filter([
-           PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-       ]) : [],
-   ],
-
-   'pgsql' => [
-       'driver' => 'pgsql',
-       'url' => env('DATABASE_URL'),
-       'host' => env('DB_HOST', '127.0.0.1'),
-       'port' => env('DB_PORT', '5432'),
-       'database' => env('DB_DATABASE', 'forge'),
-       'username' => env('DB_USERNAME', 'forge'),
-       'password' => env('DB_PASSWORD', ''),
-       'charset' => 'utf8',
-       'prefix' => '',
-       'prefix_indexes' => true,
-       'search_path' => 'public',
-       'sslmode' => 'prefer',
-   ],
-
-   'sqlsrv' => [
-       'driver' => 'sqlsrv',
-       'url' => env('DATABASE_URL'),
-       'host' => env('DB_HOST', 'localhost'),
-       'port' => env('DB_PORT', '1433'),
-       'database' => env('DB_DATABASE', 'forge'),
-       'username' => env('DB_USERNAME', 'forge'),
-       'password' => env('DB_PASSWORD', ''),
-       'charset' => 'utf8',
-       'prefix' => '',
-       'prefix_indexes' => true,
-       // 'encrypt' => env('DB_ENCRYPT', 'yes'),
-       // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
-   ],
-    */
+  ],
 
 
   /*
