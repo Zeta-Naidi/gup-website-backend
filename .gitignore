@@ -1,0 +1,51 @@
+# Laravel specific
+/node_modules
+/public/storage
+/storage/*.key
+/vendor
+Homestead.json
+Homestead.yaml
+
+# Laravel Mix
+/public/css/
+/public/js/
+
+# PHPUnit
+/phpunit.xml
+
+# Environment files
+/.env
+
+# PhpStorm
+.idea
+
+# Sublime Text
+.sublime-project
+.sublime-workspace
+
+# VS Code
+.vscode/
+
+# Logs and databases
+/storage/*.log
+/database/*.sqlite
+/database/*.sqlite3
+/database/*.db
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# User-specific files
+Homestead.yaml
+Homestead.json
+*.sublime-project
+*.sublime-workspace
+*.idea/workspace.xml
+*.idea/tasks.xml
+*.idea/dictionaries
